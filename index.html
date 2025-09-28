@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPULSE | Siente el pulso del planeta</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Paleta de colores verdes para EcoPULSE */
+        :root {
+            --primary-dark: #1A472A; /* Verde Bosque Oscuro */
+            --primary-medium: #3A7D44; /* Verde Medio */
+            --primary-light: #A7C957; /* Verde Salvia Claro */
+            --accent-green: #84CC16; /* Verde Lima */
+            --text-light: #f0fdf4; /* Blanco verdoso */
+            --text-dark: #1e293b; /* Gris oscuro */
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-medium));
+        }
+        .text-gradient {
+            background: linear-gradient(to right, var(--primary-light), var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-animate {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .step-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header -->
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+               <a href="#" class="flex items-center space-x-3">
+    <img src="EcoPULSE.png" alt="Logo EcoPULSE" class="h-[55px] w-auto object-contain">
+    <span class="text-2xl font-bold text-slate-800">EcoPULSE</span>
+</a>
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-slate-600 hover:text-green-700 transition">Inicio</a>
+                    <a href="#proyecto" class="text-slate-600 hover:text-green-700 transition">El Proyecto</a>
+                    <a href="#participa" class="text-slate-600 hover:text-green-700 transition">Participa</a>
+                    <a href="#contacto" class="text-slate-600 hover:text-green-700 transition">Contacto</a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#inicio" class="block py-2 px-3 rounded-md text-slate-600 hover:bg-green-50">Inicio</a>
+            <a href="#proyecto" class="block py-2 px-3 rounded-md text-slate-600 hover:bg-green-50">El Proyecto</a>
+            <a href="#participa" class="block py-2 px-3 rounded-md text-slate-600 hover:bg-green-50">Participa</a>
+            <a href="#contacto" class="block py-2 px-3 rounded-md text-slate-600 hover:bg-green-50">Contacto</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="inicio" class="relative overflow-hidden">
+            <div class="absolute inset-0 gradient-bg"></div>
+            <div class="absolute inset-0 bg-no-repeat bg-center" style="background-image: url('https://www.transparenttextures.com/patterns/leafy.png'); opacity: 0.05;"></div>
+            <div class="container mx-auto px-6 py-24 md:py-32 relative z-10 text-center text-white">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">
+                    Revitaliza tu ciudad. <br> Conviértete en un <span class="text-gradient">creador de oasis urbanos</span>.
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-slate-200 mb-8">
+                    Únete a EcoPULSE, la iniciativa ciudadana que transforma espacios urbanos en áreas verdes sostenibles y tecnológicas, mejorando nuestra calidad de vida.
+                </p>
+                <a href="#participa" class="bg-white text-green-800 font-bold py-3 px-8 rounded-full hover:bg-slate-200 transition transform hover:scale-105 shadow-lg">
+                    ¡Empieza a transformar!
+                </a>
+            </div>
+        </section>
+
+        <!-- About the Project Section -->
+        <section id="proyecto" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 section-animate">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">¿Qué es EcoPULSE?</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Un proyecto para combatir la falta de parques y espacios naturales en las ciudades, impulsando la salud ambiental y el bienestar comunitario.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <!-- Feature 1 -->
+                    <div class="bg-slate-50 p-8 rounded-xl shadow-md border border-slate-200/50 section-animate" style="transition-delay: 100ms;">
+                        <div class="bg-green-100 text-green-700 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /><path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12l0 2.5" /></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-slate-800">Misión</h3>
+                        <p class="text-slate-600">Crear una red de áreas verdes urbanas, sostenibles y mejoradas con tecnología, diseñadas y mantenidas por la propia comunidad para revitalizar nuestras ciudades.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="bg-slate-50 p-8 rounded-xl shadow-md border border-slate-200/50 section-animate" style="transition-delay: 200ms;">
+                        <div class="bg-green-100 text-green-700 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-slate-800">Visión</h3>
+                        <p class="text-slate-600">Construir ciudades más verdes, saludables y conectadas, donde cada ciudadano tenga acceso a espacios naturales que fomenten el bienestar y la cohesión social.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="bg-slate-50 p-8 rounded-xl shadow-md border border-slate-200/50 section-animate" style="transition-delay: 300ms;">
+                        <div class="bg-green-100 text-green-700 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M3.6 9h16.8" /><path d="M3.6 15h16.8" /><path d="M11.5 3a17 17 0 0 0 0 18" /><path d="M12.5 3a17 17 0 0 1 0 18" /></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-slate-800">Impacto</h3>
+                        <p class="text-slate-600">Tu participación directa mejora la calidad del aire, aumenta la biodiversidad urbana y crea espacios comunitarios vibrantes para el disfrute de todos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Participate Section -->
+        <section id="participa" class="py-20 md:py-28 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 section-animate">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Unirse es una aventura</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">En tres sencillos pasos, ayudas a reverdecer tu entorno.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="step-card bg-white p-8 rounded-xl shadow-lg border border-transparent transition-all duration-300 section-animate" style="transition-delay: 100ms;">
+                        <div class="flex items-center mb-4">
+                            <span class="flex items-center justify-center h-12 w-12 rounded-full bg-green-600 text-white font-bold text-xl mr-4">1</span>
+                            <h3 class="text-2xl font-semibold text-slate-800">Regístrate</h3>
+                        </div>
+                        <p class="text-slate-600">Crea tu perfil de explorador en nuestra plataforma. Es rápido, fácil y el primer paso para transformar tu barrio.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="step-card bg-white p-8 rounded-xl shadow-lg border border-transparent transition-all duration-300 section-animate" style="transition-delay: 200ms;">
+                        <div class="flex items-center mb-4">
+                            <span class="flex items-center justify-center h-12 w-12 rounded-full bg-green-600 text-white font-bold text-xl mr-4">2</span>
+                            <h3 class="text-2xl font-semibold text-slate-800">Identifica</h3>
+                        </div>
+                        <p class="text-slate-600">Usa nuestra app para mapear y proponer espacios en tu comunidad con potencial para convertirse en nuevas áreas verdes.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="step-card bg-white p-8 rounded-xl shadow-lg border border-transparent transition-all duration-300 section-animate" style="transition-delay: 300ms;">
+                        <div class="flex items-center mb-4">
+                            <span class="flex items-center justify-center h-12 w-12 rounded-full bg-green-600 text-white font-bold text-xl mr-4">3</span>
+                            <h3 class="text-2xl font-semibold text-slate-800">Actúa</h3>
+                        </div>
+                        <p class="text-slate-600">Súmate a eventos de plantación y talleres de jardinería para ayudar a mantener los nuevos espacios verdes de tu ciudad.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 section-animate">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Únete a la Conversación</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">¿Preguntas, ideas o colaboraciones? Estamos aquí para escucharte.</p>
+                </div>
+                
+                <div class="max-w-xl mx-auto bg-slate-50 p-8 rounded-xl shadow-md border border-slate-200/50 section-animate">
+                    <form id="contact-form">
+                        <div class="mb-6">
+                            <label for="name" class="block text-slate-700 font-medium mb-2">Nombre</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="email" class="block text-slate-700 font-medium mb-2">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-slate-700 font-medium mb-2">Mensaje</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-green-700 text-white font-bold py-3 px-8 rounded-full hover:bg-green-800 transition transform hover:scale-105 shadow-lg">
+                                Enviar Mensaje
+                            </button>
+                        </div>
+                         <p id="form-feedback" class="text-center mt-4 text-green-600"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <a href="#" class="flex items-center justify-center space-x-3 text-white mx-auto mb-4">
+    <img src="EcoPULSE.png" alt="Logo EcoPULSE" class="h-12 w-auto object-contain">
+    <span class="text-2xl font-bold">EcoPULSE</span>
+</a>
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M18 14a6 6 0 1 0 -12 0a6 6 0 0 0 12 0z" />
+                        <path d="M18 14h-1.637c-.328 -3.128 -2.48 -5.623 -5.363 -6.364v-1.636a6 6 0 1 0 7 8z" />
+                        <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="M20 12h2" /> <path d="M2 12h2" />
+                    </svg>
+                    <span class="text-2xl font-bold">EcoPULSE</span>
+                </a>
+            <p>&copy; 2025 EcoPULSE. Todos los derechos reservados.</p>
+            <p class="text-sm text-slate-300 mt-2">Sintiendo el pulso de una ciudad más verde.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu on link click
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Animate sections on scroll
+            const sections = document.querySelectorAll('.section-animate');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Contact form simulation
+            const contactForm = document.getElementById('contact-form');
+            const formFeedback = document.getElementById('form-feedback');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                formFeedback.textContent = '¡Gracias! Tu mensaje ha sido enviado.';
+                contactForm.reset();
+                setTimeout(() => {
+                    formFeedback.textContent = '';
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
+

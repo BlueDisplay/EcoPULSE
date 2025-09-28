@@ -13,6 +13,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
     <!-- Custom Styles -->
     <style>
         body {
@@ -49,12 +61,19 @@
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+
+          #mapaLeaflet .leaflet-top,
+  #mapaLeaflet .leaflet-bottom {
+    z-index: 400 !important;
+  }
+  
+         #mapaLeaflet { height: 480px; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
     <!-- Header -->
-    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
+   <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-[2000] shadow-sm transition-all duration-300">
         <div class="container mx-auto px-6 py-3">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
@@ -68,6 +87,7 @@
                     <a href="#proyecto" class="text-slate-600 hover:text-green-700 transition">El Proyecto</a>
                     <a href="#participa" class="text-slate-600 hover:text-green-700 transition">Participa</a>
                     <a href="#contacto" class="text-slate-600 hover:text-green-700 transition">Contacto</a>
+                    <a href="#mapa" class="text-slate-600 hover:text-green-700 transition">Mapa</a>
                 </nav>
                 
                 <!-- Mobile Menu Button -->
@@ -85,6 +105,7 @@
             <a href="#proyecto" class="block py-2 px-3 rounded-md text-slate-600 hover:bg-green-50">El Proyecto</a>
             <a href="#participa" class="block py-2 px-3 rounded-md text-slate-600 hover:bg-green-50">Participa</a>
             <a href="#contacto" class="block py-2 px-3 rounded-md text-slate-600 hover:bg-green-50">Contacto</a>
+            <a href="#mapa" class="block py-2 px-3 rounded-md text-slate-600 hover:bg-green-50">Mapa</a>
         </div>
     </header>
 
@@ -142,6 +163,19 @@
                 </div>
             </div>
         </section>
+
+        <section id="mapa" class="py-20 md:py-28 bg-white">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Mapa</h2>
+      <p class="mt-3 text-slate-600">
+        Explora el mapa interactivo. (Ejemplo centrado en Hermosillo)
+      </p>
+    </div>
+
+    <div id="mapaLeaflet" class="rounded-xl overflow-hidden shadow-lg border border-slate-200"></div>
+  </div>
+</section>
 
         <!-- How to Participate Section -->
         <section id="participa" class="py-20 md:py-28 bg-gray-100">
@@ -215,23 +249,16 @@
     </main>
 
     <!-- Footer -->
-    <footer class="gradient-bg text-white">
-        <div class="container mx-auto px-6 py-8 text-center">
-            <a href="#" class="flex items-center justify-center space-x-3 text-white mx-auto mb-4">
-    <img src="EcoPULSE.png" alt="Logo EcoPULSE" class="h-12 w-auto object-contain">
-    <span class="text-2xl font-bold">EcoPULSE</span>
-</a>
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M18 14a6 6 0 1 0 -12 0a6 6 0 0 0 12 0z" />
-                        <path d="M18 14h-1.637c-.328 -3.128 -2.48 -5.623 -5.363 -6.364v-1.636a6 6 0 1 0 7 8z" />
-                        <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="M20 12h2" /> <path d="M2 12h2" />
-                    </svg>
-                    <span class="text-2xl font-bold">EcoPULSE</span>
-                </a>
-            <p>&copy; 2025 EcoPULSE. Todos los derechos reservados.</p>
-            <p class="text-sm text-slate-300 mt-2">Sintiendo el pulso de una ciudad más verde.</p>
-        </div>
-    </footer>
+<footer class="gradient-bg text-white">
+  <div class="container mx-auto px-6 py-8 text-center">
+    <a href="#" class="flex items-center justify-center space-x-3 text-white mx-auto mb-4">
+      <img src="EcoPULSE.png" alt="Logo EcoPULSE" class="h-12 w-auto object-contain">
+      <span class="text-2xl font-bold">EcoPULSE</span>
+    </a>
+    <p>&copy; 2025 EcoPULSE. Todos los derechos reservados.</p>
+    <p class="text-sm text-slate-300 mt-2">Sintiendo el pulso de una ciudad más verde.</p>
+  </div>
+</footer>
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -273,6 +300,42 @@
             sections.forEach(section => {
                 observer.observe(section);
             });
+
+// Caja de Hermosillo (urbano aprox). Ajusta si quieres más/menos área.
+const bounds = L.latLngBounds(
+  [29.00, -111.05], // suroeste
+  [29.16, -110.85]  // noreste
+);
+
+const centro = [29.072967, -110.955919];
+
+const map = L.map('mapaLeaflet', {
+  zoomControl: true,
+  scrollWheelZoom: true,
+  minZoom: 12,              // evita alejarse demasiado
+  maxZoom: 18,
+  maxBounds: bounds,        // limita a la caja
+  maxBoundsViscosity: 1.0   // “pegajoso” en el borde
+});
+
+// En lugar de setView, ajusta a los límites
+map.fitBounds(bounds);
+
+// Capa base OSM — SIN wrap y con bounds
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap',
+  noWrap: true,     // <- evita que el mundo se repita
+  bounds: bounds    // <- solo renderiza dentro de la caja
+}).addTo(map);
+
+// Marcador de ejemplo
+L.marker(centro).addTo(map)
+  .bindPopup('<b>Hermosillo, Sonora</b><br>Mapa base listo.')
+  .openPopup();
+
+// Si el contenedor entra animado, recalcula
+setTimeout(() => map.invalidateSize(), 300);
             
             // Contact form simulation
             const contactForm = document.getElementById('contact-form');

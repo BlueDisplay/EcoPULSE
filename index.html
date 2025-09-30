@@ -303,8 +303,8 @@
 
 // Caja de Hermosillo (urbano aprox). Ajusta si quieres más/menos área.
 const bounds = L.latLngBounds(
-  [29.00, -111.05], // suroeste
-  [29.16, -110.85]  // noreste
+  [28.13, -112.62], // suroeste (bajamos 28.23 → 28.13)
+  [29.83, -110.35]  // noreste (subimos 29.73 → 29.83)
 );
 
 const centro = [29.072967, -110.955919];
@@ -312,7 +312,7 @@ const centro = [29.072967, -110.955919];
 const map = L.map('mapaLeaflet', {
   zoomControl: true,
   scrollWheelZoom: true,
-  minZoom: 12,              // evita alejarse demasiado
+  minZoom: 9,              // evita alejarse demasiado
   maxZoom: 18,
   maxBounds: bounds,        // limita a la caja
   maxBoundsViscosity: 1.0   // “pegajoso” en el borde
@@ -333,6 +333,127 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 L.marker(centro).addTo(map)
   .bindPopup('<b>Hermosillo, Sonora</b><br>Mapa base listo.')
   .openPopup();
+
+// === CARGA DE CAPAS GEOJSON ===
+let lyrUrbanas, lyrRurales, lyrMunicipio;
+
+// Helper de estilo y popup
+const estilos = {
+  urbanas: { color: '#1d4ed8', weight: 1, fillOpacity: 0.35 },   // azul
+  rurales: { color: '#ca8a04', weight: 1, fillOpacity: 0.35 },   // dorado
+  municipio: { color: '#16a34a', weight: 1.5, fillOpacity: 0.15 } // verde
+};
+
+function popupAGEB(tipo, f) {
+  const p = f.properties || {};
+  const cve = p.CVE_AGEB ?? p.cve_ageb ?? 'N/A';
+  const nom = p.NOM_LOC ?? p.nom_loc ?? '';
+  return `<b>${tipo}</b><br>AGEB: ${cve}${nom ? `<br>Loc: ${nom}` : ''}`;
+}
+
+// Cargar Urbanas
+fetch('GeoJSON/AGEB-Urbanas.geojson')
+  .then(r => r.json())
+  .then(data => {
+    lyrUrbanas = L.geoJSON(data, {
+      style: estilos.urbanas,
+      onEachFeature: (f, layer) => layer.bindPopup(popupAGEB('Urbana', f))
+    }).addTo(map);
+    enableBtn('btnUrbanas');
+  });
+
+// Cargar Rurales
+fetch('GeoJSON/AGEB-Rurales.geojson')
+  .then(r => r.json())
+  .then(data => {
+    lyrRurales = L.geoJSON(data, {
+      style: estilos.rurales,
+      onEachFeature: (f, layer) => layer.bindPopup(popupAGEB('Rural', f))
+    }).addTo(map);
+    enableBtn('btnRurales');
+  });
+
+// Cargar Municipio (límite municipal)
+fetch('GeoJSON/AGEB-Municipio.geojson')
+  .then(r => r.json())
+  .then(data => {
+    lyrMunicipio = L.geoJSON(data, {
+      style: estilos.municipio,
+      onEachFeature: (f, layer) => {
+        const p = f.properties || {};
+        layer.bindPopup(`<b>Municipio</b><br>CVE_MUN: ${p.CVE_MUN ?? 'N/A'}`);
+      }
+    }).addTo(map);
+    enableBtn('btnMunicipio');
+  });
+
+// === CONTROL PERSONALIZADO CON TOGGLES ===
+const ToggleControl = L.Control.extend({
+  options: { position: 'topright' },
+  onAdd: function () {
+    const div = L.DomUtil.create('div', 'leaflet-bar bg-white rounded-xl shadow p-2');
+    div.style.display = 'flex';
+    div.style.gap = '6px';
+
+    // Evitar que el mapa se mueva al hacer click en los botones
+    L.DomEvent.disableClickPropagation(div);
+
+    function mkBtn(id, label, bg='bg-white', fg='text-slate-700') {
+      const b = L.DomUtil.create('button', `${bg} ${fg} border border-slate-200 rounded-lg px-3 py-1 text-sm font-medium hover:bg-slate-50 transition`, div);
+      b.id = id;
+      b.textContent = label;
+      b.disabled = true; // se habilita cuando cargue la capa
+      b.style.opacity = '0.6';
+      return b;
+    }
+
+    mkBtn('btnUrbanas', 'Urbanas');
+    mkBtn('btnRurales', 'Rurales');
+    mkBtn('btnMunicipio', 'Municipio');
+
+    return div;
+  }
+});
+L.control.toggle = (opts) => new ToggleControl(opts);
+L.control.toggle().addTo(map);
+
+// Helpers de estado de botón
+function setActive(btn, active) {
+  btn.classList.toggle('bg-green-600', active);
+  btn.classList.toggle('text-white', active);
+  btn.classList.toggle('bg-white', !active);
+  btn.classList.toggle('text-slate-700', !active);
+}
+
+function enableBtn(id) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  // Por defecto: activo (capa visible)
+  setActive(btn, true);
+}
+
+// Listeners (toggle por botón)
+document.addEventListener('click', (e) => {
+  const t = e.target;
+  if (!(t instanceof HTMLButtonElement)) return;
+
+  if (t.id === 'btnUrbanas' && lyrUrbanas) {
+    if (map.hasLayer(lyrUrbanas)) { map.removeLayer(lyrUrbanas); setActive(t, false); }
+    else { lyrUrbanas.addTo(map); setActive(t, true); }
+  }
+
+  if (t.id === 'btnRurales' && lyrRurales) {
+    if (map.hasLayer(lyrRurales)) { map.removeLayer(lyrRurales); setActive(t, false); }
+    else { lyrRurales.addTo(map); setActive(t, true); }
+  }
+
+  if (t.id === 'btnMunicipio' && lyrMunicipio) {
+    if (map.hasLayer(lyrMunicipio)) { map.removeLayer(lyrMunicipio); setActive(t, false); }
+    else { lyrMunicipio.addTo(map); setActive(t, true); }
+  }
+});
 
 // Si el contenedor entra animado, recalcula
 setTimeout(() => map.invalidateSize(), 300);
